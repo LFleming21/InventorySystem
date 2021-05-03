@@ -1,0 +1,121 @@
+import java.sql.*;
+import java.util.*;
+public class Main {
+
+	public static void main(String[] args) {
+		
+		System.out.println("Please choose from the following options, or press q to quit\n");
+		System.out.println("Press O to obtain inventory.\nPress A to add inventory.\nPress R to remove Inventory ");
+		
+		Scanner kb = new Scanner(System.in);
+		String choice = kb.next();
+		
+		while(! choice.equalsIgnoreCase("q")) {
+			
+		
+		
+			if (choice.equalsIgnoreCase("O")) {
+				getAllData();
+			}
+			
+			if (choice.equalsIgnoreCase("A")) {
+				String iName="";
+				int iQty = 0;
+				System.out.println("Enter the Fasteners Name\n");
+				iName = kb.next();
+				System.out.println("Enter the Amount of Fasteners\n");
+				iQty = kb.nextInt();
+				
+				
+				
+				
+			}
+			if (choice.equalsIgnoreCase("R")) {
+				
+			}
+			if (choice.equalsIgnoreCase("C")) {
+				String pName = "";
+				int pQty = 0;
+				System.out.println("Enter a Product name\n");
+				pName = kb.next();
+				System.out.println("Enter the qty of the item\n");
+				pQty = kb.nextInt();
+			
+				addData(pName, pQty);
+				
+		}
+			System.out.println("Please choose from the following options...\n");
+			System.out.println("Press O to obtain inventory.\nPress A to add inventory.\nPress R to remove Inventory.\nPress q to quit ");
+			choice = kb.next();
+		}
+			if(choice.equalsIgnoreCase("q")) {
+				System.out.println("Ending program, Thank you!");
+			}
+
+		try {
+			
+			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Warehouse", "root", "Fleming11");
+			System.out.println("Log in Successfull to the inventory!");
+		} catch (SQLException e){		
+			System.out.println("Error while connectiong to the database");
+		}
+	}
+		public static void deleteData(String name, int qty) {
+		try {
+			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Warehouse", "root", "Fleming11");
+			System.out.println("Connected with the Warehouse successfully");
+			PreparedStatement preparedStatement = connection.prepareStatement("insert into Inventory values(?,?)");
+			preparedStatement.setString(1,name);
+				preparedStatement.setInt(2,qty);
+				
+				
+				preparedStatement.executeUpdate();
+				System.out.println("Data inserted"); 
+		} catch (SQLException e) {
+			System.out.println("Error while connecting to the Warehouse.");
+		}
+		try {
+			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Warehouse", "root", "Fleming11");
+			System.out.println("Connected with the Warehouse successfully");
+			//delete item
+					PreparedStatement preparedStatement=connection.prepareStatement("delete from inventory where name=?");
+					preparedStatement.setString(0, "name");
+					System.out.println("Deletion completed");
+		} catch (SQLException e){
+			System.out.println("Error while connecting to Warehouse");
+		}
+	}
+	
+		public static void getAllData() {
+			try {
+				Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/warehouse", "root", "Fleming11");
+				System.out.println("Connected with Warehouse successfully");
+				
+					PreparedStatement preparedStatement=connection.prepareStatement("SELECT * warehouse");
+					ResultSet resultSet=preparedStatement.executeQuery();
+					while(resultSet.next()) {
+						String name=resultSet.getString("name");
+						int qty=resultSet.getInt("qty");
+						//return results
+						System.out.printf("Name %s, Qty %d", name, qty);
+					}
+			} catch (SQLException e) {
+				System.out.println("Error while connection to Warehouse");
+			}
+		}
+	public static void addData(String name, int qty) {
+		try {
+			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Warehouse", "root", "Fleming11");
+			System.out.println("Connected with the Warehouse successfully");
+			PreparedStatement preparedStatement = connection.prepareStatement("insert into Inventory values(?,?)");
+			preparedStatement.setString(1,name);
+				preparedStatement.setInt(2,qty);
+				
+				
+				preparedStatement.executeUpdate();
+				System.out.println("Data inserted"); 
+		} catch (SQLException e) {
+			System.out.println("Error while connecting to the Warehouse.");
+		}
+	}
+}
