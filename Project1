@@ -10,7 +10,7 @@ public class Main {
 		Scanner kb = new Scanner(System.in);
 		String choice = kb.next();
 		
-		while(! choice.equalsIgnoreCase("q")) {
+		while(! choice.equalsIgnoreCase("T")) {
 			
 		
 		
